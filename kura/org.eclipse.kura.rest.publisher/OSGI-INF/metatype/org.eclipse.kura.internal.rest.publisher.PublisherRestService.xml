@@ -12,7 +12,7 @@
 <MetaData xmlns="http://www.osgi.org/xmlns/metatype/v1.2.0" localization="en_us">
     <OCD id="org.eclipse.kura.internal.rest.publisher.PublisherRestService"
          name="RestPublisher"
-         description="Example of a Configuring Kura Application.">
+         description="Service accepting publishing requests through REST.">
 
         <Icon resource="http://s3.amazonaws.com/kura-resources/application/icon/applications-other.png" size="32"/>
 

@@ -17,13 +17,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+/**
+ * Data transfer object carrying list of metrics including names, types and values.
+ */
 public class PublishRequest {
 
     private static final String BAD_PUBLISH_REQUEST_ERROR_MESSAGE = "Bad request, expected request format: { \"metrics\": [ { \"name\" : \"...\", \"type\" : \"...\", \"value\" : \"...\" }, ... ] }";
 
     private List<Metric> metrics;
 
-    public List<Metric> getRequestItems() {
+    public List<Metric> getMetrics() {
         return this.metrics;
     }
 

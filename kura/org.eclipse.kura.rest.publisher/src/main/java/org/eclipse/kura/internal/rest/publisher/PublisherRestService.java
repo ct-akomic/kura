@@ -12,8 +12,6 @@ package org.eclipse.kura.internal.rest.publisher;
 
 import static java.util.Objects.nonNull;
 
-import java.util.Base64;
-import java.util.Base64.Encoder;
 import java.util.Date;
 import java.util.Map;
 
@@ -43,7 +41,6 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 
@@ -90,8 +87,6 @@ public class PublisherRestService implements ConfigurableComponent {
     private static final String BAD_PUBLISH_REQUEST_ERROR_MESSAGE = "Bad request, expected request format: { \"metrics\": [ { \"name\" : \"...\", \"type\" : \"...\", \"value\" : \"...\" }, ... ] }";
     private static final String INVALID_METRIC_TYPE_ERROR_MESSAGE = "Bad request, invalid type. Valid metric types are: string, double, int, float, long, boolean, base64Binary.";
 
-    private static final Encoder BASE64_ENCODER = Base64.getEncoder();
-
     private static final Logger logger = LoggerFactory.getLogger(PublisherRestService.class);
 
     private ServiceTrackerCustomizer<CloudService, CloudService> cloudServiceTrackerCustomizer;
@@ -100,13 +95,9 @@ public class PublisherRestService implements ConfigurableComponent {
     private CloudClient cloudClient;
     private String oldSubscriptionTopic;
 
-    private Map<String, Object> properties;
-
     private BundleContext bundleContext;
 
     private PublisherOptions publisherOptions;
-
-    private Gson channelSerializer;
 
     // ----------------------------------------------------------------
     //
@@ -116,8 +107,6 @@ public class PublisherRestService implements ConfigurableComponent {
 
     protected void activate(ComponentContext componentContext, Map<String, Object> properties) {
         logger.info("Activating PublisherRestService...");
-
-        this.properties = properties;
 
         this.bundleContext = componentContext.getBundleContext();
 
@@ -193,7 +182,7 @@ public class PublisherRestService implements ConfigurableComponent {
         payload.setTimestamp(new Date());
 
         // Add metrics to the payload
-        for (Metric metric : publishRequest.getRequestItems()) {
+        for (Metric metric : publishRequest.getMetrics()) {
             String metricName = metric.getName();
             String metricType = metric.getType();
             Object metricValue = metric.getValue();
@@ -245,7 +234,7 @@ public class PublisherRestService implements ConfigurableComponent {
         try {
             if (nonNull(this.cloudService) && nonNull(this.cloudClient)) {
                 messageId = this.cloudClient.publish(topic, payload, qos, retain);
-                logger.info("Published to {} message: {} with ID: {}", new Object[] { topic, payload, messageId });
+                logger.info("Published to {} message: {} with ID: {}", topic, payload, messageId);
             }
         } catch (Exception e) {
             logger.error("Cannot publish topic: {}", topic, e);
@@ -265,9 +254,6 @@ public class PublisherRestService implements ConfigurableComponent {
 
     public void updated(Map<String, Object> properties) {
         logger.info("Updated PublisherRestService...");
-
-        // store the properties received
-        this.properties = properties;
 
         this.publisherOptions = new PublisherOptions(properties);
 

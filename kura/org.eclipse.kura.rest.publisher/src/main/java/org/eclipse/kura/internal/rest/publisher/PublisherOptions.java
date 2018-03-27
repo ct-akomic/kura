@@ -15,9 +15,12 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Map;
 
+/**
+ * Class used for storing Cloud Application configuration and Publishing properties.
+ */
 final class PublisherOptions {
 
-    // Cloud Application identifier
+    // Cloud Application Default Congifuration
     private static final String DEFAULT_APP_ID = "REST_PUBLISHER";
     private static final String DEFAULT_CLOUD_SERVICE_PID = "org.eclipse.kura.cloud.CloudService";
     private static final int DEFAULT_PUBLISH_QOS = 0;
@@ -38,15 +41,6 @@ final class PublisherOptions {
         this.properties = properties;
     }
 
-    String getCloudServicePid() {
-        String cloudServicePid = DEFAULT_CLOUD_SERVICE_PID;
-        Object configCloudServicePid = this.properties.get(CLOUD_SERVICE_PROP_NAME);
-        if (nonNull(configCloudServicePid) && configCloudServicePid instanceof String) {
-            cloudServicePid = (String) configCloudServicePid;
-        }
-        return cloudServicePid;
-    }
-
     String getAppId() {
         String appId = DEFAULT_APP_ID;
         Object app = this.properties.get(APP_ID_PROP_NAME);
@@ -54,6 +48,24 @@ final class PublisherOptions {
             appId = String.valueOf(app);
         }
         return appId;
+    }
+
+    String getAppTopic() {
+        String appTopic = DEFAULT_APP_TOPIC;
+        Object topic = this.properties.get(PUBLISH_TOPIC_PROP_NAME);
+        if (nonNull(topic) && topic instanceof String) {
+            appTopic = String.valueOf(topic);
+        }
+        return appTopic;
+    }
+
+    String getCloudServicePid() {
+        String cloudServicePid = DEFAULT_CLOUD_SERVICE_PID;
+        Object configCloudServicePid = this.properties.get(CLOUD_SERVICE_PROP_NAME);
+        if (nonNull(configCloudServicePid) && configCloudServicePid instanceof String) {
+            cloudServicePid = (String) configCloudServicePid;
+        }
+        return cloudServicePid;
     }
 
     int getPublishQos() {
@@ -72,15 +84,6 @@ final class PublisherOptions {
             publishRetain = (boolean) retain;
         }
         return publishRetain;
-    }
-
-    String getAppTopic() {
-        String appTopic = DEFAULT_APP_TOPIC;
-        Object topic = this.properties.get(PUBLISH_TOPIC_PROP_NAME);
-        if (nonNull(topic) && topic instanceof String) {
-            appTopic = String.valueOf(topic);
-        }
-        return appTopic;
     }
 
 }
