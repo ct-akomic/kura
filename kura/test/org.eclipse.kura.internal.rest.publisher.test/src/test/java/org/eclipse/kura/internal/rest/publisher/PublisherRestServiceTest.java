@@ -36,7 +36,7 @@ import com.google.gson.JsonPrimitive;
 public class PublisherRestServiceTest {
 
     @Test(expected = WebApplicationException.class)
-    public void testEmptyPublishRequestValidationException() throws KuraException, NoSuchFieldException {
+    public void testEmptyPublishRequestValidationException() throws KuraException {
         // test publish with empty list of metrics
 
         PublisherRestService prs = new PublisherRestService();
@@ -59,7 +59,7 @@ public class PublisherRestServiceTest {
     }
 
     @Test(expected = WebApplicationException.class)
-    public void testIncorrectRequestFormValidationException() throws KuraException, NoSuchFieldException {
+    public void testIncorrectRequestFormValidationException() throws KuraException {
         // test publish with incorrect request form
 
         PublisherRestService prs = new PublisherRestService();
