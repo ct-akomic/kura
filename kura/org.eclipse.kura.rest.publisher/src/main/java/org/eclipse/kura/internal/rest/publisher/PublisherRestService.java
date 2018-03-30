@@ -93,7 +93,6 @@ public class PublisherRestService implements ConfigurableComponent {
     private ServiceTracker<CloudService, CloudService> cloudServiceTracker;
     private CloudService cloudService;
     private CloudClient cloudClient;
-    private String oldSubscriptionTopic;
 
     private BundleContext bundleContext;
 
@@ -132,7 +131,6 @@ public class PublisherRestService implements ConfigurableComponent {
         logger.info("Releasing CloudApplicationClient for {}...", this.publisherOptions.getAppId());
         // close the client
         closeCloudClient();
-        oldSubscriptionTopic = null;
 
         if (nonNull(this.cloudServiceTracker)) {
             this.cloudServiceTracker.close();
